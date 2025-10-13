@@ -1,0 +1,9 @@
+import react from "react";
+import axios from "axios";
+
+const api = axios.create({
+  baseURL: 'http://192.168.0.45:3000/',
+  
+});
+
+export default api;
