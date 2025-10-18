@@ -68,7 +68,7 @@ export default function ImageUpload() {
                 />
             )}
 
-            <Button title="Salvar Imagem" onPress={uploadUser} />
+            <Button title="Salvar" onPress={uploadUser} />
 
         </View>
 
