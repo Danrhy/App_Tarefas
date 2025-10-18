@@ -1,25 +1,54 @@
 import React, { useEffect, useState } from "react";
-import { View, Image, Text } from "react-native";
-import AsyncStorage from "@react-native-async-storage/async-storage";
+import { View, Image, Text, FlatList } from "react-native";
+import api from "../server/api";
+
 
 export default function ProfileScreen() {
-  const [profileImage, setProfileImage] = useState(null);
+  
+  
+  const [image, setImage] = useState([]);
 
-  useEffect(() => {
-    (async () => {
-      const savedImage = await AsyncStorage.getItem("profileImage");
-      
-      if (savedImage) setProfileImage(savedImage);
-    })();
-  }, []);
+const Buscar = async ()=>{
 
-  return (
-    <View style={{ flex: 1, alignItems: "center", justifyContent: "center" }}>
-     
-        <Image
-          source={{ uri: profileImage }}
-          style={{ width: 200, height: 200, borderRadius: 100 }}
-       />
-    </View>
-  );
+const response = await api.get("/user");
+setImage(response.data)
+
+};
+
+useEffect(()=>{
+  Buscar();
+},[])
+
+
+const renderItem = ({item})=>(
+
+<View style={{ marginVertical: 10, alignItems: "center" }}>
+  {item.foto_url && (
+                <Image
+                  source={{ uri: item.foto_url }}
+                  style={{ width: 100, height: 100, borderRadius: 50 }}
+                />
+              )}
+</View>
+
+)
+const keyExtractor = (item)=>{
+
+  return item.id.toString();
+
+}
+
+
+  return(
+
+    <FlatList
+    
+    data={image}
+    renderItem={renderItem}
+    keyExtractor={keyExtractor}
+    
+    
+    />
+
+  )
 }
